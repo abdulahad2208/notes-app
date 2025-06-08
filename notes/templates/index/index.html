@@ -1,0 +1,30 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 70vh;">
+    <h1 style="
+        font-family: 'Segoe UI', 'Arial', sans-serif;
+        font-size: 2.8rem;
+        font-weight: bold;
+        background: linear-gradient(90deg, #00adb5 0%, #00fff5 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        text-shadow: 0 4px 24px #00adb588;
+        margin-bottom: 2rem;
+        letter-spacing: 2px;
+    ">
+        Welcome to the Notes App
+    </h1>
+    <a href="#" class="btn btn-lg mt-3 px-5 py-2" style="
+        background: linear-gradient(90deg, #00adb5 0%, #393e46 100%);
+        color: #fff;
+        font-size: 1.3rem;
+        font-weight: 500;
+        border-radius: 16px;
+        box-shadow: 0 2px 12px #00adb544;
+        transition: background 0.3s, color 0.3s;
+    ">
+        View Notes List
+    </a>
+</div>
+{% endblock %}
