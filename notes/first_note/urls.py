@@ -5,4 +5,10 @@ from first_note import views
 
 urlpatterns = [
     path('register/', views.register, name='register'),
+    path('notes/', views.notes_page, name='notes_page'),
+    path('upload_notes/', views.upload_notes, name='upload_notes'),
+    path('profile/<str:username>/', views.profile, name='profile'),
+    path('like_note/<int:note_id>/', views.like_note, name='like_note'),
+    path('delete_note/<int:note_id>/', views.delete_note, name='delete_note'),
+    path('edit/<int:note_id>/', views.edit_note, name='edit_note'),
 ]

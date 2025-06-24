@@ -1,10 +1,10 @@
 {% extends "layout.html" %}
-{% block title %}Sign Up{% endblock %}
+{% block title %}Edit Note{% endblock %}
 
 {% block content %}
 <div class="d-flex justify-content-center align-items-center" style="min-height: 80vh;">
-    <div class="card p-4 shadow-lg" style="min-width: 350px; max-width: 400px; background: linear-gradient(135deg, #232526 0%, #393e46 100%); border-radius: 18px;">
-        <form method="post" class="w-100">
+    <div class="card p-4 shadow-lg" style="min-width: 350px; max-width: 500px; background: linear-gradient(135deg, #232526 0%, #393e46 100%); border-radius: 18px;">
+        <form method="post" enctype="multipart/form-data" class="w-100">
             {% csrf_token %}
             <h2 class="text-center mb-4" style="
                 font-weight: bold;
@@ -14,7 +14,7 @@
                 text-shadow: 0 2px 12px #00adb588;
                 letter-spacing: 1px;
             ">
-                Sign Up
+                Edit Note
             </h2>
             {{ form.as_p }}
             <button type="submit" class="btn w-100" style="
@@ -24,12 +24,8 @@
                 border-radius: 12px;
                 box-shadow: 0 2px 12px #00adb544;
                 font-size: 1.1rem;
-            ">Register</button>
+            ">Update</button>
         </form>
-        <p class="text-center mt-3" style="color: #bdbdbd;">
-            Already have an account?
-            <a href="{% url 'login' %}" style="color: #00fff5;">Login here</a>
-        </p>
     </div>
 </div>
 {% endblock %}

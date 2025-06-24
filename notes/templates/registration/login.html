@@ -1,5 +1,5 @@
 {% extends "layout.html" %}
-{% block title %}Sign Up{% endblock %}
+{% block title %}Login{% endblock %}
 
 {% block content %}
 <div class="d-flex justify-content-center align-items-center" style="min-height: 80vh;">
@@ -14,7 +14,7 @@
                 text-shadow: 0 2px 12px #00adb588;
                 letter-spacing: 1px;
             ">
-                Sign Up
+                Login
             </h2>
             {{ form.as_p }}
             <button type="submit" class="btn w-100" style="
@@ -24,11 +24,11 @@
                 border-radius: 12px;
                 box-shadow: 0 2px 12px #00adb544;
                 font-size: 1.1rem;
-            ">Register</button>
+            ">Login</button>
         </form>
         <p class="text-center mt-3" style="color: #bdbdbd;">
-            Already have an account?
-            <a href="{% url 'login' %}" style="color: #00fff5;">Login here</a>
+            Don't have an account?
+            <a href="{% url 'register' %}" style="color: #00fff5;">Sign up here</a>
         </p>
     </div>
 </div>
