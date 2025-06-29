@@ -1,0 +1,35 @@
+{% extends "layout.html" %}
+{% block title %}Search Results{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2 class="note-title mb-4">Search Results for "{{ query }}"</h2>
+    {% if results %}
+        <div class="row g-4">
+            {% for note in results %}
+                <div class="col-12 col-md-6 col-lg-4">
+                    <div class="card h-100 mb-4 p-3 shadow" style="background: linear-gradient(135deg, #232526 0%, #393e46 100%); border-radius: 16px;">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <span class="note-title">{{ note.user.username }}</span>
+                            <span class="note-meta">{{ note.created_at|date:"M d, Y H:i" }}</span>
+                        </div>
+                        <div class="mb-2" style="color: #e0e0e0;">
+                            {{ note.content|linebreaks }}
+                        </div>
+                        {% if note.pdf %}
+                            <a href="{{ note.pdf.url }}" class="btn btn-sm" style="background: linear-gradient(90deg, #00adb5 0%, #393e46 100%); color: #fff;" target="_blank">
+                                View PDF
+                            </a>
+                        {% endif %}
+                        <div class="mt-2 note-meta">
+                            Likes: {{ note.likes.count }}
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="alert alert-info text-center">No notes found matching your search.</div>
+    {% endif %}
+</div>
+{% endblock %}

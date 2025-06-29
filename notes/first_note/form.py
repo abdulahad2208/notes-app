@@ -25,3 +25,25 @@ class NotesForm(forms.ModelForm):
             'content': 'Note Content',
             'pdf': 'Upload PDF (optional)',
         }
+
+class CommentForm(forms.Form):
+    content = forms.CharField(widget=forms.Textarea(attrs={'rows': 2, 'cols': 40}), label='Comment')
+    
+    def __init__(self, *args, **kwargs):
+        self.note = kwargs.pop('note', None)
+        super().__init__(*args, **kwargs)
+    
+    def save(self, user):
+        if self.note:
+            comment = self.note.comments.create(user=user, content=self.cleaned_data['content'])
+            return comment
+        return None
+    
+class searchForm(forms.Form):
+    query = forms.CharField(label='Search Notes', max_length=100, required=False, widget=forms.TextInput(attrs={'placeholder': 'Search notes...'}))
+    
+    def search(self):
+        query = self.cleaned_data.get('query')
+        if query:
+            return notes.objects.filter(content__icontains=query)
+        return notes.objects.none()

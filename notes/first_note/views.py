@@ -2,8 +2,9 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
-from .form import UserRegistrationForm, NotesForm
+from .form import UserRegistrationForm, NotesForm, CommentForm, searchForm
 from .models import notes
+from django.db.models import Q
 
 
 # Create your views here.
@@ -23,8 +24,10 @@ def register(request):
     return render(request, 'registration/register.html', {'form': form})
 
 def notes_page(request):
-    all_notes=notes.objects.all()
-    return render(request, 'notes/notes_page.html', {'notes': all_notes})
+    all_notes = notes.objects.all()
+    comment_forms = {note.id: CommentForm() for note in all_notes}
+    search_form = searchForm()
+    return render(request, 'notes/notes_page.html', {'notes': all_notes, 'comment_forms': comment_forms, 'form': search_form})
 
 @login_required
 def upload_notes(request):
@@ -76,3 +79,23 @@ def edit_note(request, note_id):
         return render(request, 'notes/edit_note.html', {'form': form})
     else:
         return render(request, 'notes/error.html', {'message': 'You are not authorized to edit this note.'})
+
+@login_required
+def comment_on_note(request, note_id):
+    note = get_object_or_404(notes, id=note_id)
+    if request.method == 'POST':
+        form = CommentForm(request.POST, note=note)
+        if form.is_valid():
+            form.save(user=request.user)
+            return redirect('comment_on_note', note_id=note.id)
+    else:
+        form = CommentForm(note=note)
+    return render(request, 'notes/comment_on_note.html', {'note': note, 'form': form})
+
+def search_notes(request):
+    query = request.GET.get('query', '')
+    if query:
+        results = notes.objects.filter(Q(content__icontains=query) | Q(user__username__icontains=query))
+    else:
+        results = notes.objects.none()
+    return render(request, 'notes/search_results.html', {'results': results, 'query': query})
