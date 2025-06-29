@@ -1,0 +1,20 @@
+{% extends "layout.html" %}
+{% block title %}Note Summary{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="card p-4 shadow-lg" style="background: linear-gradient(135deg, #232526 0%, #393e46 100%); border-radius: 18px;">
+        <h2 class="mb-3" style="color: #00adb5;">Summary</h2>
+        <div style="font-size: 1.1rem; color: #fff;">
+            {{ summary|linebreaks }}
+        </div>
+        {% if note.pdf %}
+            <div class="mt-4">
+                <a href="{{ note.pdf.url }}" class="btn" style="background: linear-gradient(90deg, #00adb5 0%, #393e46 100%); color: #fff; border-radius: 12px;">
+                    View Original PDF
+                </a>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

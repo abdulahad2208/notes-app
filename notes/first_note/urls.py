@@ -13,4 +13,5 @@ urlpatterns = [
     path('edit/<int:note_id>/', views.edit_note, name='edit_note'),
     path('comment/<int:note_id>/', views.comment_on_note, name='comment_on_note'),
     path('search/', views.search_notes, name='search_notes'),
+    path('notes/<int:note_id>/summary/', views.summarize_note_pdf, name='note_summary'),
 ]

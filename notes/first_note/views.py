@@ -5,6 +5,7 @@ from django.contrib.auth.models import User
 from .form import UserRegistrationForm, NotesForm, CommentForm, searchForm
 from .models import notes
 from django.db.models import Q
+from .utils import extract_text_from_pdf, summarize_text
 
 
 # Create your views here.
@@ -99,3 +100,15 @@ def search_notes(request):
     else:
         results = notes.objects.none()
     return render(request, 'notes/search_results.html', {'results': results, 'query': query})
+
+@login_required
+def summarize_note_pdf(request, note_id):
+    note = get_object_or_404(notes, id=note_id, user=request.user)
+    pdf_path = note.pdf.path  # ✅ this is the correct file path on your system
+    text = extract_text_from_pdf(pdf_path)  # ✅ send path to your utils
+    summary = summarize_text(text)
+
+    return render(request, 'notes/note_summary.html', {
+        'note': note,
+        'summary': summary
+    })
