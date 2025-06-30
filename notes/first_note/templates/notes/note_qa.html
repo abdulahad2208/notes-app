@@ -1,0 +1,36 @@
+{% extends 'layout.html' %}
+{% block content %}
+<h2 class="mb-4" style="color: #00adb5;">Ask a Question About: {{ note.title }}</h2>
+
+<form method="post" class="mb-3">
+    {% csrf_token %}
+    <div class="input-group">
+        <input type="text" name="question" class="form-control" placeholder="Ask your question..." required style="border-radius: 12px 0 0 12px;">
+        <button type="submit" class="btn" style="
+            background: linear-gradient(90deg, #00adb5 0%, #393e46 100%);
+            color: #fff;
+            font-weight: 500;
+            border-radius: 0 12px 12px 0;
+            box-shadow: 0 2px 12px #00adb544;
+        ">
+            Ask
+        </button>
+    </div>
+</form>
+
+{% if answer %}
+    <div class="alert mt-3" style="background: linear-gradient(90deg, #00adb5 0%, #393e46 100%); color: #fff; border-radius: 12px;">
+        <strong>Answer:</strong> {{ answer }}
+    </div>
+{% endif %}
+
+<a href="{% url 'notes_page' %}" class="btn mt-3" style="
+    background: linear-gradient(90deg, #393e46 0%, #00adb5 100%);
+    color: #fff;
+    border-radius: 12px;
+    font-weight: 500;
+    box-shadow: 0 2px 12px #00adb544;
+">
+    ⬅ Back to Notes
+</a>
+{% endblock %}

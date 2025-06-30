@@ -81,6 +81,7 @@
         }
     </style>
 </head>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <body>
     <nav class="navbar navbar-expand-lg px-3">
         <a class="navbar-brand" href="#">📝 Notes</a>
@@ -102,5 +103,20 @@
     <div class="container mt-4">
         {% block content %}{% endblock %}
     </div>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var offcanvas = document.getElementById('sidebarMenu');
+        var hamburgerBtn = document.getElementById('hamburgerBtn');
+        if (offcanvas && hamburgerBtn) {
+            offcanvas.addEventListener('show.bs.offcanvas', function () {
+                hamburgerBtn.style.display = 'none';
+            });
+            offcanvas.addEventListener('hidden.bs.offcanvas', function () {
+                hamburgerBtn.style.display = '';
+            });
+        }
+    });
+    </script>
 </body>
 </html>

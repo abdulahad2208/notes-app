@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 from .form import UserRegistrationForm, NotesForm, CommentForm, searchForm
 from .models import notes
 from django.db.models import Q
-from .utils import extract_text_from_pdf, summarize_text
+from .utils import extract_text_from_pdf, summarize_text, answer_question_from_text
 
 
 # Create your views here.
@@ -111,4 +111,62 @@ def summarize_note_pdf(request, note_id):
     return render(request, 'notes/note_summary.html', {
         'note': note,
         'summary': summary
+    })
+
+@login_required
+def ask_pdf_question(request, note_id):
+    note = get_object_or_404(notes, id=note_id, user=request.user)
+    answer = ""
+    if not note.pdf:
+        return render(request, "notes/error.html", {"message": "No PDF uploaded for this note."})
+    if request.method == "POST":
+        question = request.POST.get("question")
+        if question:
+            pdf_path = note.pdf.path
+            text = extract_text_from_pdf(pdf_path)
+            if text:
+                answer = answer_question_from_text(text, question)
+            else:
+                answer = "Could not extract text from the PDF."
+        else:
+            answer = "Please enter a question."
+    return render(request, "notes/note_qa.html", {"note": note, "answer": answer})
+
+@login_required
+def add_to_favourites(request, note_id):
+    note = get_object_or_404(notes, id=note_id)
+    note.favourites.add(request.user)
+    return redirect('notes_page')
+
+@login_required
+def remove_from_favourites(request, note_id):
+    note = get_object_or_404(notes, id=note_id)
+    note.favourites.remove(request.user)
+    return redirect('notes_page')
+
+@login_required
+def favourite_notes(request):
+    fav_notes = request.user.favourite_notes.all()
+    return render(request, 'notes/favourite_notes.html', {'notes': fav_notes})
+
+from django.shortcuts import render, get_object_or_404
+from .models import notes
+
+def branch_semesters(request, branch):
+    semesters = range(1, 9)
+    branch_display = dict(notes.BRANCH_CHOICES).get(branch, branch)
+    return render(request, 'notes/semesters_list.html', {
+        'branch': branch,
+        'branch_display': branch_display,
+        'semesters': semesters
+    })
+
+def notes_by_branch_semester(request, branch, semester):
+    branch_display = dict(notes.BRANCH_CHOICES).get(branch, branch)
+    notes_list = notes.objects.filter(branch=branch, semester=semester)
+    return render(request, 'notes/notes_by_branch_semester.html', {
+        'branch': branch,
+        'branch_display': branch_display,
+        'semester': semester,
+        'notes': notes_list
     })

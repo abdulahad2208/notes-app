@@ -1,0 +1,19 @@
+<!-- filepath: d:\Abdul Ahad\Desktop\django\notes app\notes\first_note\templates\notes\semesters_list.html -->
+{% extends "layout.html" %}
+{% block title %}{{ branch_display }} Semesters{% endblock %}
+{% block content %}
+<div class="container mt-4">
+    <h2 class="mb-4" style="color:#00adb5;">{{ branch_display }} - Select Semester</h2>
+    <div class="row g-3">
+        {% for sem in semesters %}
+            <div class="col-6 col-md-3">
+                <a href="{% url 'notes_by_branch_semester' branch sem %}" class="card text-center shadow" style="border-radius: 12px; text-decoration:none;">
+                    <div class="card-body" style="background: linear-gradient(90deg, #232526 0%, #393e46 100%); color: #fff; border-radius: 12px;">
+                        <h5>Semester {{ sem }}</h5>
+                    </div>
+                </a>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
